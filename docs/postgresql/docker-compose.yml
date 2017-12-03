@@ -1,0 +1,20 @@
+user-database:
+  restart: always
+  image: postgres:10.1
+  ports:
+    - "5432:5432"
+  environment:
+    - POSTGRES_USER=root
+    - POSTGRES_PASSWORD=testtest
+    - POSTGRES_DB=ocomis-user
+
+user-database-admin:
+  restart: always
+  image: fenglc/pgadmin4:2.0
+  ports:
+    - "5050:5050"
+  environment:
+    - DEFAULT_USER=admin
+    - DEFAULT_PASSWORD=test
+  links:
+    - user-database

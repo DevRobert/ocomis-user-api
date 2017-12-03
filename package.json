@@ -1,0 +1,37 @@
+{
+  "name": "ocomis-user-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "./node_modules/.bin/lab -I '__core-js_shared__' test/**",
+    "eslint": "./node_modules/.bin/eslint index.js lib/** migrations/** test/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevRobert/ocomis-user-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevRobert/ocomis-user-api/issues"
+  },
+  "homepage": "https://github.com/DevRobert/ocomis-user-api#readme",
+  "dependencies": {
+    "hapi": "^16.6.2",
+    "knex": "^0.14.2",
+    "pg": "^7.4.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "code": "^5.1.2",
+    "eslint": "^4.12.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "lab": "^15.1.2"
+  }
+}
