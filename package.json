@@ -19,12 +19,17 @@
   },
   "homepage": "https://github.com/DevRobert/ocomis-user-api#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "good": "^7.3.0",
+    "good-console": "^6.4.1",
+    "good-squeeze": "^5.0.2",
     "hapi": "^16.6.2",
     "knex": "^0.14.2",
     "pg": "^7.4.0",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "code": "^5.1.2",
     "eslint": "^4.12.1",
     "eslint-config-standard": "^10.2.1",
@@ -32,6 +37,8 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "lab": "^15.1.2"
+    "knex-cleaner": "^1.1.3",
+    "lab": "^15.1.2",
+    "sinon": "^4.1.3"
   }
 }

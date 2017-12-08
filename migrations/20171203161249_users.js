@@ -3,8 +3,7 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable('users', (table) => {
             table.increments('id').primary()
             table.string('name')
-            table.string('password_salt')
-            table.string('password_hash')
+            table.string('password')
             table.unique('name')
         })
     ])
