@@ -39,7 +39,10 @@ describe('user controller', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users'
+                    url: '/users',
+                    payload: {
+                        name: 'bernd'
+                    }
                 })
 
                 // Assert
@@ -51,8 +54,19 @@ describe('user controller', () => {
         })
 
         describe('if the input is invalid', () => {
-            it('should return an error response', () => {
+            it('should return an error response', async () => {
+                // Act
 
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('Please enter the name.')
             })
         })
     })
