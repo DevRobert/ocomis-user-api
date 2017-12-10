@@ -279,7 +279,7 @@ describe('UserController', () => {
             })
         })
 
-        describe('if the is not user for the given user id', () => {
+        describe('if there is no user for the given user id', () => {
             it('should return an error response', async () => {
                 // Act
 
