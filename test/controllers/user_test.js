@@ -96,32 +96,151 @@ describe('UserController', () => {
 
                 expect(response.statusCode).equals(400)
                 expect(response.result).instanceOf(Object)
-                expect(response.result.message).equals('There already exists an user with the specified name.')
+                expect(response.result.message).equals('A user with the given name already exists.')
             })
         })
     })
 
-    /*
     describe('PUT /users/{userId}', () => {
-        describe('if the user id and input is valid', () => {
-            it('should update the user', () => {
+        describe('if the user id is not a valid number', () => {
+            it('should return an error response', async () => {
+                // Act
 
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/abc'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The given user id is not a valid number.')
             })
         })
 
-        describe('if the user id is invalid', () => {
-            it('should update the user', () => {
+        describe('if the user does not exist', () => {
+            it('should return an error response', async () => {
+                // Act
 
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/1'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(404)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The user was not found.')
             })
         })
 
-        describe('if the input is invalid', () => {
-            it('should return an error', () => {
+        describe('if no name is given', () => {
+            it('should return an error response', async () => {
+                // Act
 
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The name was not specified.')
+            })
+        })
+
+        describe('if the name has not been changed', () => {
+            it('should return OK', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10',
+                    payload: {
+                        name: 'robert'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+            })
+        })
+
+        describe('if the name has been changed and the new name is still available', () => {
+            it('should return OK', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10',
+                    payload: {
+                        name: 'sam'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+            })
+
+            it('should store the new name for further credentials checks',async  () => {
+                // Arrange
+
+                const userId = 10
+                const newName = 'sam'
+
+                await Server.inject({
+                    method: 'PUT',
+                    url: `/users/${userId}`,
+                    payload: {
+                        name: newName
+                    }
+                })
+
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users/validateCredentials',
+                    payload: {
+                        name: newName,
+                        password: 'test'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.id).equals(userId)
+            })
+        })
+
+        describe('if the name has been changed and the new name is already in use', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10',
+                    payload: {
+                        name: 'stefan'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('A user with the given name already exists.')
             })
         })
     })
-    */
 
     describe('PUT /users/{userId}/password', () => {
         describe('if the given id is not a valid number', () => {

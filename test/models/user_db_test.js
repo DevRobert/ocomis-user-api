@@ -18,7 +18,7 @@ describe('UserDB', () => {
     })
 
     describe('createUser', () => {
-        it('should create an user and return its id', async () => {
+        it('should create a user and return its id', async () => {
             // Arrange
 
             const user = {
