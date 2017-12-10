@@ -17,7 +17,7 @@ describe('UserDB', () => {
         await TestData.initializeTestData()
     })
 
-    describe('createUser()', () => {
+    describe('createUser', () => {
         it('should create an user and return its id', async () => {
             // Arrange
 
@@ -35,7 +35,7 @@ describe('UserDB', () => {
         })
     })
 
-    describe('getUser()', () => {
+    describe('getUser', () => {
         it('should return the user for a valid id', async () => {
             // Arrange
 
@@ -67,7 +67,7 @@ describe('UserDB', () => {
         })
     })
 
-    describe('getUserByName()', () => {
+    describe('getUserByName', () => {
         it('should return the user for a valid name', async () => {
             // Arrange
 

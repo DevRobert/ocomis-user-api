@@ -123,6 +123,187 @@ describe('UserController', () => {
     })
     */
 
+    describe('PUT /users/{userId}/password', () => {
+        describe('if the given id is not a valid number', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/abc/password',
+                    payload: {
+                        password: 'new-passwored'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The given user id is not a valid number.')
+            })
+        })
+
+        describe('if the user was not found', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/1/password',
+                    payload: {
+                        password: 'new-password'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(404)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The user was not found.')
+            })
+        })
+        
+        describe('if the user id is valid and a password is given', () => {
+            it('should accept the password', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10/password',
+                    payload: {
+                        password: 'new-password'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+            })
+
+            it('should store the password for further credentials checks', async () => {
+                // Arrange
+
+                const newPassword = 'new-password'
+
+                await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10/password',
+                    payload: {
+                        password: newPassword
+                    }
+                })
+
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users/validateCredentials',
+                    payload: {
+                        name: 'robert',
+                        password: newPassword
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+            })
+        })
+
+        describe('if the user id is valid and no password is given', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/users/10/password'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The password was not specified.')
+            })
+        })
+    })
+
+    describe('DELETE /users/{userId}/password', () => {
+        describe('if the user id is not a number', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'DELETE',
+                    url: '/users/abc/password'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The given user id is not a valid number.')
+            })
+        })
+
+        describe('if the user was not found', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'DELETE',
+                    url: '/users/1/password'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(404)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('The user was not found.')
+            })
+        })
+
+        describe('if the user id is valid', () => {
+            it('should return OK', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'DELETE',
+                    url: '/users/10/password'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
+            })
+
+            it('should clear the password for further credentials checks', async () => {
+                // Arrange
+
+                await Server.inject({
+                    method: 'DELETE',
+                    url: '/users/10/password'
+                })
+
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users/validateCredentials',
+                    payload: {
+                        name: 'robert',
+                        password: 'test'
+                    }
+                })
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('No password has been set for the user.')
+            })
+        })
+    })
+
     describe('POST /users/validateCredentials', () => {
         describe('if the credentials are valid', () => {
             it('should return the user', async () => {
