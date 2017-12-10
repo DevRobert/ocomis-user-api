@@ -11,7 +11,7 @@ describe('UserController', () => {
 
     describe('POST /users', () => {
         describe('if the name and no password is given', () => {
-            it('should create the user', async () => {
+            it('should create the user and return its id', async () => {
                 // Act
 
                 const response = await Server.inject({
