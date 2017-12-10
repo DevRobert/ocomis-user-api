@@ -10,7 +10,7 @@ describe('UserController', () => {
     })
 
     describe('POST /users', () => {
-        describe('if the input is valid', () => {
+        describe('if the name and no password is given', () => {
             it('should create the user', async () => {
                 // Act
 
@@ -27,6 +27,39 @@ describe('UserController', () => {
                 expect(response.statusCode).equals(201)
                 expect(response.result).instanceOf(Object)
                 expect(response.result.id).number().greaterThan(0)
+            })
+        })
+
+        describe('if the name and a password is given', () => {
+            it('should store the password for further credentials checks', async () => {
+                // Arrange
+
+                const name = 'sam'
+                const password = 'sam-password'
+
+                await Server.inject({
+                    method: 'POST',
+                    url: '/users',
+                    payload: {
+                        name,
+                        password
+                    }
+                })
+
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users/validateCredentials',
+                    payload: {
+                        name,
+                        password
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(200)
             })
         })
 
