@@ -188,7 +188,7 @@ describe('UserController', () => {
                 expect(response.statusCode).equals(200)
             })
 
-            it('should store the new name for further credentials checks',async  () => {
+            it('should store the new name for further credentials checks', async () => {
                 // Arrange
 
                 const userId = 10
@@ -282,7 +282,7 @@ describe('UserController', () => {
                 expect(response.result.message).equals('The user was not found.')
             })
         })
-        
+
         describe('if the user id is valid and a password is given', () => {
             it('should accept the password', async () => {
                 // Act
