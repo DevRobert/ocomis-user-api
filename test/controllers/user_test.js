@@ -126,7 +126,7 @@ describe('UserController', () => {
                     }
                 })
 
-                // Arrange
+                // Assert
 
                 expect(response.statusCode).equals(400)
                 expect(response.result).instanceOf(Object)
