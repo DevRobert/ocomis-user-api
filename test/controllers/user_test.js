@@ -30,7 +30,7 @@ describe('UserController', () => {
             })
         })
 
-        describe('if the input is invalid', () => {
+        describe('if the name was not specified', () => {
             it('should return an error response', async () => {
                 // Act
 
@@ -44,6 +44,26 @@ describe('UserController', () => {
                 expect(response.statusCode).equals(400)
                 expect(response.result).instanceOf(Object)
                 expect(response.result.message).equals('The name was not specified.')
+            })
+        })
+
+        describe('if the name is already used', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/users',
+                    payload: {
+                        name: 'robert'
+                    }
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(400)
+                expect(response.result).instanceOf(Object)
+                expect(response.result.message).equals('There already exists an user with the specified name.')
             })
         })
     })

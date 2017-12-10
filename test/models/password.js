@@ -12,9 +12,6 @@ describe('Password', () => {
                 const password = 'test'
                 const passwordHash = Password.generateHash(password)
 
-                console.log('PW: ' + password)
-                console.log('PWH: ' + passwordHash)
-
                 // Act
 
                 const result = Password.checkPassword(passwordHash, password)
