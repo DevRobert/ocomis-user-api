@@ -1,4 +1,4 @@
-const generateSaltAndHash = require('../../lib/models/password').generateSaltAndHash
+const generateHash = require('../../lib/models/password').generateHash
 const DB = require('../../lib/models/DB')
 const KnexCleaner = require('knex-cleaner')
 
@@ -21,11 +21,14 @@ async function clearAll () {
 async function initializeUsers () {
     let users = [
         { id: 10, name: 'robert', password: 'test' },
-        { id: 20, name: 'stefan', password: 'test2' }
+        { id: 20, name: 'stefan', password: 'test2' },
+        { id: 30, name: 'bernd', password: undefined }
     ]
 
     users.forEach((user) => {
-        user.password = generateSaltAndHash(user.password)
+        if (user.password) {
+            user.password = generateHash(user.password)
+        }
     })
 
     await DB.batchInsert('users', users)
