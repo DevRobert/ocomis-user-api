@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js | ./node_modules/.bin/pino-socket -a ocomis-logging-logstash -p 5000 -m tcp",
     "test": "./node_modules/.bin/lab -I '__core-js_shared__' test/**",
     "eslint": "./node_modules/.bin/eslint index.js lib/** migrations/** test/**"
   },
@@ -25,8 +25,10 @@
     "good-console": "^6.4.1",
     "good-squeeze": "^5.0.2",
     "hapi": "^16.6.2",
+    "hapi-pino": "^3.3.1",
     "knex": "^0.14.2",
     "pg": "^7.4.0",
+    "pino-socket": "^1.0.1",
     "uuid": "^3.1.0"
   },
   "devDependencies": {

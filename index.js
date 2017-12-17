@@ -1,4 +1,5 @@
 const Hapi = require('hapi')
+const HapiPino = require('hapi-pino')
 const Routes = require('./lib/routes')
 const DB = require('./lib/models/db')
 const good = require('good')
@@ -29,21 +30,17 @@ async function provision () {
         }
     }
 
-    server.register({ register: good, options: goodOptions }, (error) => {
-        if (error) {
-            return console.error(error)
-        }
+    await server.register(HapiPino)
+    await server.register({ register: good, options: goodOptions })
+    await server.start()
 
-        server.start((error) => {
-            if (error) {
-                return console.error(error)
-            }
-
-            console.log(`Server running at: ${server.info.uri}`)
-        })
-    })
+    console.log('Ocomis User API Service started.')
+    console.log(`Server running at: ${server.info.uri}`)
 }
 
-provision()
+provision().catch((error) => {
+    console.error(error)
+    process.exit(1)
+})
 
 module.exports = server // only for testing
