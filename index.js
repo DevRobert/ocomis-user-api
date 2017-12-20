@@ -1,4 +1,5 @@
 const Hapi = require('hapi')
+const pino = require('pino')
 const HapiPino = require('hapi-pino')
 const Routes = require('./lib/routes')
 const DB = require('./lib/models/db')
@@ -6,21 +7,30 @@ const DB = require('./lib/models/db')
 const server = new Hapi.Server()
 
 function provision () {
-    return new Promise((fulfill, reject) => {
+    return new Promise((resolve, reject) => {
         server.connection({
             port: 3002
         })
 
         server.route(Routes)
 
-        server.register(HapiPino, (error) => {
+        const logger = pino().child({
+            service: 'ocomis-user-api'
+        })
+
+        server.register({
+            register: HapiPino,
+            options: {
+                instance: logger
+            }
+        }, (error) => {
             if (error) {
                 return reject(error)
             }
 
             DB.migrate.latest().then(() => {
                 server.logger().info('Ocomis User DB Migration finished.')
-                server.start().then(fulfill).catch(reject)
+                server.start().then(resolve).catch(reject)
             }).catch(reject)
         })
     })
