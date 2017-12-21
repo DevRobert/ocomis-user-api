@@ -9,14 +9,14 @@ describe('UserController', () => {
         await TestData.initializeTestData()
     })
 
-    describe('POST /users', () => {
+    describe('POST /user/api/users', () => {
         describe('if the name and no password is given', () => {
             it('should create the user and return its id', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users',
+                    url: '/user/api/users',
                     payload: {
                         name: 'sam'
                     }
@@ -39,7 +39,7 @@ describe('UserController', () => {
 
                 await Server.inject({
                     method: 'POST',
-                    url: '/users',
+                    url: '/user/api/users',
                     payload: {
                         name,
                         password
@@ -50,7 +50,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name,
                         password
@@ -69,7 +69,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users'
+                    url: '/user/api/users'
                 })
 
                 // Assert
@@ -86,7 +86,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users',
+                    url: '/user/api/users',
                     payload: {
                         name: 'robert'
                     }
@@ -101,14 +101,14 @@ describe('UserController', () => {
         })
     })
 
-    describe('PUT /users/{userId}', () => {
+    describe('PUT /user/api/users/{userId}', () => {
         describe('if the user id is not a valid number', () => {
             it('should return an error response', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/abc'
+                    url: '/user/api/users/abc'
                 })
 
                 // Assert
@@ -125,7 +125,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/1'
+                    url: '/user/api/users/1'
                 })
 
                 // Assert
@@ -142,7 +142,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10'
+                    url: '/user/api/users/10'
                 })
 
                 // Assert
@@ -159,7 +159,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10',
+                    url: '/user/api/users/10',
                     payload: {
                         name: 'robert'
                     }
@@ -177,7 +177,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10',
+                    url: '/user/api/users/10',
                     payload: {
                         name: 'sam'
                     }
@@ -196,7 +196,7 @@ describe('UserController', () => {
 
                 await Server.inject({
                     method: 'PUT',
-                    url: `/users/${userId}`,
+                    url: `/user/api/users/${userId}`,
                     payload: {
                         name: newName
                     }
@@ -206,7 +206,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: newName,
                         password: 'test'
@@ -227,7 +227,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10',
+                    url: '/user/api/users/10',
                     payload: {
                         name: 'stefan'
                     }
@@ -242,14 +242,14 @@ describe('UserController', () => {
         })
     })
 
-    describe('PUT /users/{userId}/password', () => {
+    describe('PUT /user/api/users/{userId}/password', () => {
         describe('if the given id is not a valid number', () => {
             it('should return an error response', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/abc/password',
+                    url: '/user/api/users/abc/password',
                     payload: {
                         password: 'new-passwored'
                     }
@@ -269,7 +269,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/1/password',
+                    url: '/user/api/users/1/password',
                     payload: {
                         password: 'new-password'
                     }
@@ -289,7 +289,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10/password',
+                    url: '/user/api/users/10/password',
                     payload: {
                         password: 'new-password'
                     }
@@ -307,7 +307,7 @@ describe('UserController', () => {
 
                 await Server.inject({
                     method: 'PUT',
-                    url: '/users/10/password',
+                    url: '/user/api/users/10/password',
                     payload: {
                         password: newPassword
                     }
@@ -317,7 +317,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert',
                         password: newPassword
@@ -336,7 +336,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'PUT',
-                    url: '/users/10/password'
+                    url: '/user/api/users/10/password'
                 })
 
                 // Assert
@@ -348,14 +348,14 @@ describe('UserController', () => {
         })
     })
 
-    describe('DELETE /users/{userId}/password', () => {
+    describe('DELETE /user/api/users/{userId}/password', () => {
         describe('if the user id is not a number', () => {
             it('should return an error response', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'DELETE',
-                    url: '/users/abc/password'
+                    url: '/user/api/users/abc/password'
                 })
 
                 // Assert
@@ -372,7 +372,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'DELETE',
-                    url: '/users/1/password'
+                    url: '/user/api/users/1/password'
                 })
 
                 // Assert
@@ -389,7 +389,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'DELETE',
-                    url: '/users/10/password'
+                    url: '/user/api/users/10/password'
                 })
 
                 // Assert
@@ -402,14 +402,14 @@ describe('UserController', () => {
 
                 await Server.inject({
                     method: 'DELETE',
-                    url: '/users/10/password'
+                    url: '/user/api/users/10/password'
                 })
 
                 // Act
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert',
                         password: 'test'
@@ -423,14 +423,14 @@ describe('UserController', () => {
         })
     })
 
-    describe('POST /users/validateCredentials', () => {
+    describe('POST /user/api/users/validateCredentials', () => {
         describe('if the credentials are valid', () => {
             it('should return the user', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert',
                         password: 'test'
@@ -453,7 +453,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         password: 'test'
                     }
@@ -473,7 +473,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert'
                     }
@@ -493,7 +493,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'wrong-username',
                         password: 'password'
@@ -514,7 +514,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert',
                         password: 'wrong-password'
@@ -535,7 +535,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'bernd',
                         password: 'password'
@@ -556,7 +556,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'POST',
-                    url: '/users/validateCredentials',
+                    url: '/user/api/users/validateCredentials',
                     payload: {
                         name: 'robert',
                         password: 'wrong-password'
@@ -572,7 +572,7 @@ describe('UserController', () => {
         })
     })
 
-    describe('GET /users', () => {
+    describe('GET /user/api/users', () => {
         it('it should return the list of users', async () => {
             // Act
 
@@ -595,14 +595,14 @@ describe('UserController', () => {
         })
     })
 
-    describe('GET /users/{userId}', () => {
+    describe('GET /user/api/users/{userId}', () => {
         describe('if the user id is valid', () => {
             it('should return the user', async () => {
                 // Act
 
                 const response = await Server.inject({
                     method: 'GET',
-                    url: '/users/10'
+                    url: '/user/api/users/10'
                 })
 
                 // Assert
@@ -621,7 +621,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'GET',
-                    url: '/users/abc'
+                    url: '/user/api/users/abc'
                 })
 
                 // Assert
@@ -638,7 +638,7 @@ describe('UserController', () => {
 
                 const response = await Server.inject({
                     method: 'GET',
-                    url: '/users/15'
+                    url: '/user/api/users/15'
                 })
 
                 // Assert
