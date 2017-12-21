@@ -1,8 +1,8 @@
 const Hapi = require('hapi')
-const pino = require('pino')
 const HapiPino = require('hapi-pino')
 const Routes = require('./lib/routes')
 const DB = require('./lib/models/db')
+const logger = require('./lib/logger')
 
 const server = new Hapi.Server()
 
@@ -13,10 +13,6 @@ function provision () {
         })
 
         server.route(Routes)
-
-        const logger = pino().child({
-            service: 'ocomis-user-api'
-        })
 
         server.register({
             register: HapiPino,
@@ -29,7 +25,7 @@ function provision () {
             }
 
             DB.migrate.latest().then(() => {
-                server.logger().info('Ocomis User DB Migration finished.')
+                logger.info('Ocomis User DB Migration finished.')
                 server.start().then(resolve).catch(reject)
             }).catch(reject)
         })
@@ -37,10 +33,10 @@ function provision () {
 }
 
 provision().then(() => {
-    server.logger().info('Ocomis User API Service started.')
-    server.logger().info(`Server running at: ${server.info.uri}`)
+    logger.info('Ocomis User API Service started.')
+    logger.info(`Server running at: ${server.info.uri}`)
 }).catch((error) => {
-    server.logger().error('Ocomis User API Service start failed: ' + error)
+    logger.error('Ocomis User API Service start failed: ' + error)
     process.exit(1)
 })
 
