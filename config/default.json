@@ -3,6 +3,7 @@
         "host": "ocomis-user-database",
         "name": "ocomis-user",
         "user": "root",
-        "password": "testtest"
+        "password": "testtest",
+        "port": "5432"
     }
 }
