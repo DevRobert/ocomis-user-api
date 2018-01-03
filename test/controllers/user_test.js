@@ -578,7 +578,7 @@ describe('UserController', () => {
 
             const response = await Server.inject({
                 method: 'GET',
-                url: '/users'
+                url: '/user/api/users'
             })
 
             // Assert

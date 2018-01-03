@@ -1,0 +1,8 @@
+{
+    "database": {
+        "host": "ocomis-user-database",
+        "name": "ocomis-user",
+        "user": "root",
+        "password": "testtest"
+    }
+}
