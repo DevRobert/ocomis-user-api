@@ -1,5 +1,5 @@
 const generateHash = require('../../lib/models/password').generateHash
-const DB = require('../../lib/models/DB')
+const DB = require('../../lib/models/db')
 const KnexCleaner = require('knex-cleaner')
 
 async function initializeTestData () {
