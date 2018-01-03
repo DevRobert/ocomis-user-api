@@ -11,7 +11,7 @@ services:
 script:
   - set -e
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - docker-compose up -f "docs/postgresql/docker-compose.yml" -d
+  - docker-compose -f "docs/postgresql/docker-compose.yml" up -d
   - docker ps
   - npm test
   - npm run eslint
