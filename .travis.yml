@@ -11,6 +11,7 @@ services:
 script:
   - set -e
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker-compose -f "docs/postgresql/docker-compose.yml" pull
   - docker-compose -f "docs/postgresql/docker-compose.yml" start
   - docker ps
   - npm test
