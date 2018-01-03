@@ -9,6 +9,7 @@ services:
   - docker
 
 script:
+  - set -e
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - npm test
   - npm run eslint
