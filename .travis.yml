@@ -13,7 +13,7 @@ script:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - docker-compose -f "docs/postgresql/docker-compose.yml" up -d
   - docker ps
-  - ./node_modules/.bin/knex migrate:latest
+#  - ./node_modules/.bin/knex migrate:latest
   - npm test
   - npm run eslint
   - docker build -t "blutner/ocomis-user-api:latest" .
