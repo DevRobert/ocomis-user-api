@@ -1,9 +1,9 @@
 {
     "database": {
-        "host": "localhost",
+        "host": "ocomis-user-database",
         "name": "ocomis-user",
         "user": "root",
         "password": "testtest",
-        "port": "5060"
+        "port": "5432"
     }
 }
