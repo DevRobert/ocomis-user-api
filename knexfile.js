@@ -12,6 +12,9 @@ const options = {
 }
 
 module.exports = {
-    test: options,
-    prod: options
+    development: options,
+    integration: options,
+    testing: options,
+    staging: options,
+    production: options
 }
