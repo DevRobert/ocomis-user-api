@@ -612,6 +612,7 @@ describe('UserController', () => {
                 expect(response.result.id).equals(10)
                 expect(response.result.name).equals('robert')
                 expect(response.result.password).undefined()
+                expect(response.result.hasPassword).equals(true)
             })
         })
 
