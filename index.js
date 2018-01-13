@@ -10,7 +10,10 @@ const server = new Hapi.Server()
 function provision () {
     return new Promise((resolve, reject) => {
         server.connection({
-            port: Config.get('server.port')
+            port: Config.get('server.port'),
+            routes: {
+                cors: true
+            }
         })
 
         server.route(Routes)
