@@ -1,5 +1,6 @@
 const Hapi = require('hapi')
 const HapiPino = require('hapi-pino')
+const Config = require('config')
 const Routes = require('./lib/routes')
 const DB = require('./lib/models/db')
 const logger = require('./lib/logger')
@@ -9,7 +10,7 @@ const server = new Hapi.Server()
 function provision () {
     return new Promise((resolve, reject) => {
         server.connection({
-            port: 3002
+            port: Config.get('server.port')
         })
 
         server.route(Routes)
