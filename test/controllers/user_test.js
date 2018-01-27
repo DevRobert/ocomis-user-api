@@ -500,7 +500,7 @@ describe('UserController', () => {
         })
 
         describe('if the user is not authenticated', () => {
-            it('should return an error message', async () => {
+            it('should not return an authentication error message', async () => {
                 // Act
 
                 const response = await Server.inject({
@@ -510,7 +510,7 @@ describe('UserController', () => {
 
                 // Assert
 
-                expect(response.statusCode).equals(401)
+                expect(response.statusCode).not.equals(401)
             })
         })
     })
@@ -521,7 +521,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -545,7 +544,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -566,7 +564,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -587,7 +584,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -609,7 +605,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -631,7 +626,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -653,7 +647,6 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
-                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -671,7 +664,7 @@ describe('UserController', () => {
         })
 
         describe('if the user is not authenticated', () => {
-            it('should return an error message', async () => {
+            it('should not return an authentication error message', async () => {
                 // Act
 
                 const response = await Server.inject({
@@ -681,7 +674,7 @@ describe('UserController', () => {
 
                 // Assert
 
-                expect(response.statusCode).equals(401)
+                expect(response.statusCode).not.equals(401)
             })
         })
     })
