@@ -8,5 +8,9 @@
         "user": "root",
         "password": "testtest",
         "port": "5432"
+    },
+    "jwt": {
+        "cookieKey": "ocomis-token",
+        "secret": "test"
     }
 }

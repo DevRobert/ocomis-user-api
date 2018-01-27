@@ -1,9 +1,11 @@
 const Hapi = require('hapi')
 const HapiPino = require('hapi-pino')
+const HapiAuthJwt2 = require('hapi-auth-jwt2')
 const Config = require('config')
 const Routes = require('./lib/routes')
 const DB = require('./lib/models/db')
 const logger = require('./lib/logger')
+const validateToken = require('./lib/models/validate_token')
 
 const server = new Hapi.Server()
 
@@ -16,17 +18,29 @@ function provision () {
             }
         })
 
-        server.route(Routes)
+        const plugins = [
+            { register: HapiPino, options: { instance: logger } },
+            HapiAuthJwt2
+        ]
 
-        server.register({
-            register: HapiPino,
-            options: {
-                instance: logger
-            }
-        }, (error) => {
+        server.register(plugins, (error) => {
             if (error) {
-                return reject(error)
+                reject(error)
+                return
             }
+
+            server.auth.strategy('jwt', 'jwt', {
+                key: Config.get('jwt.secret'),
+                validateFunc: validateToken,
+                verifyOptions: {
+                    algorithms: [ 'HS256' ]
+                },
+                cookieKey: Config.get('jwt.cookieKey')
+            })
+
+            server.auth.default('jwt')
+
+            server.route(Routes)
 
             DB.migrate.latest().then(() => {
                 logger.info('Ocomis User DB Migration finished.')

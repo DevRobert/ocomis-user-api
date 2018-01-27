@@ -3,6 +3,14 @@ const { beforeEach, describe, it } = lab
 const { expect } = require('code')
 const TestData = require('../models/test_data')
 const Server = require('../../')
+const generateToken = require('./generate_token')
+const Config = require('config')
+
+const generateAuthCookie = () => {
+    const cookieKey = Config.get('jwt.cookieKey')
+    const cookieValue = generateToken({ userId: 1, userName: 'robert' })
+    return `${cookieKey}=${cookieValue}`
+}
 
 describe('UserController', () => {
     beforeEach(async () => {
@@ -15,6 +23,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users',
                     payload: {
@@ -38,6 +47,7 @@ describe('UserController', () => {
                 const password = 'sam-password'
 
                 await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users',
                     payload: {
@@ -49,6 +59,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -68,6 +79,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users'
                 })
@@ -85,6 +97,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users',
                     payload: {
@@ -99,6 +112,21 @@ describe('UserController', () => {
                 expect(response.result.message).equals('A user with the given name already exists.')
             })
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error response', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/user/api/users'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('PUT /user/api/users/{userId}', () => {
@@ -107,6 +135,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/abc'
                 })
@@ -124,6 +153,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/1'
                 })
@@ -141,6 +171,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10'
                 })
@@ -158,6 +189,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10',
                     payload: {
@@ -176,6 +208,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10',
                     payload: {
@@ -195,6 +228,7 @@ describe('UserController', () => {
                 const newName = 'sam'
 
                 await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: `/user/api/users/${userId}`,
                     payload: {
@@ -205,6 +239,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -226,6 +261,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10',
                     payload: {
@@ -240,6 +276,21 @@ describe('UserController', () => {
                 expect(response.result.message).equals('A user with the given name already exists.')
             })
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/user/api/users/10'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('PUT /user/api/users/{userId}/password', () => {
@@ -248,6 +299,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/abc/password',
                     payload: {
@@ -268,6 +320,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/1/password',
                     payload: {
@@ -288,6 +341,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10/password',
                     payload: {
@@ -306,6 +360,7 @@ describe('UserController', () => {
                 const newPassword = 'new-password'
 
                 await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10/password',
                     payload: {
@@ -316,6 +371,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -335,6 +391,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'PUT',
                     url: '/user/api/users/10/password'
                 })
@@ -346,6 +403,21 @@ describe('UserController', () => {
                 expect(response.result.message).equals('The password was not specified.')
             })
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'PUT',
+                    url: '/user/api/users/10/password'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('DELETE /user/api/users/{userId}/password', () => {
@@ -354,6 +426,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'DELETE',
                     url: '/user/api/users/abc/password'
                 })
@@ -371,6 +444,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'DELETE',
                     url: '/user/api/users/1/password'
                 })
@@ -388,6 +462,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'DELETE',
                     url: '/user/api/users/10/password'
                 })
@@ -401,6 +476,7 @@ describe('UserController', () => {
                 // Arrange
 
                 await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'DELETE',
                     url: '/user/api/users/10/password'
                 })
@@ -408,6 +484,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -421,6 +498,21 @@ describe('UserController', () => {
                 expect(response.result.message).equals('No password has been set for the user.')
             })
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/user/api/users/validateCredentials'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('POST /user/api/users/validateCredentials', () => {
@@ -429,6 +521,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -452,6 +545,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -472,6 +566,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -492,6 +587,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -513,6 +609,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -534,6 +631,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -555,6 +653,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'POST',
                     url: '/user/api/users/validateCredentials',
                     payload: {
@@ -570,6 +669,21 @@ describe('UserController', () => {
                 expect(response.result.message).equals('The given password is invalid.')
             })
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'POST',
+                    url: '/user/api/users/validateCredentials'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('GET /user/api/users', () => {
@@ -577,6 +691,7 @@ describe('UserController', () => {
             // Act
 
             const response = await Server.inject({
+                headers: { 'Cookie': generateAuthCookie() },
                 method: 'GET',
                 url: '/user/api/users'
             })
@@ -593,6 +708,21 @@ describe('UserController', () => {
             expect(firstUser.name).equals('robert')
             expect(firstUser.password).undefined()
         })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'GET',
+                    url: '/user/api/users'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
+            })
+        })
     })
 
     describe('GET /user/api/users/{userId}', () => {
@@ -601,6 +731,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'GET',
                     url: '/user/api/users/10'
                 })
@@ -621,6 +752,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'GET',
                     url: '/user/api/users/abc'
                 })
@@ -638,6 +770,7 @@ describe('UserController', () => {
                 // Act
 
                 const response = await Server.inject({
+                    headers: { 'Cookie': generateAuthCookie() },
                     method: 'GET',
                     url: '/user/api/users/15'
                 })
@@ -647,6 +780,21 @@ describe('UserController', () => {
                 expect(response.statusCode).equals(404)
                 expect(response.result).instanceOf(Object)
                 expect(response.result.message).equals('The user was not found.')
+            })
+        })
+
+        describe('if the user is not authenticated', () => {
+            it('should return an error message', async () => {
+                // Act
+
+                const response = await Server.inject({
+                    method: 'GET',
+                    url: '/user/api/users/15'
+                })
+
+                // Assert
+
+                expect(response.statusCode).equals(401)
             })
         })
     })
