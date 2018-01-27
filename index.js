@@ -15,7 +15,10 @@ function provision () {
             server.connection({
                 port: Config.get('server.port'),
                 routes: {
-                    cors: true
+                    cors: {
+                        origin: ['*'],
+                        credentials: true
+                    }
                 }
             })
 
