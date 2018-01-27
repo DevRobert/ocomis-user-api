@@ -1,5 +1,5 @@
 const lab = exports.lab = require('lab').script()
-const { beforeEach, describe, it } = lab
+const { before, beforeEach, describe, it } = lab
 const { expect } = require('code')
 const TestData = require('../models/test_data')
 const Server = require('../../')
@@ -13,6 +13,12 @@ const generateAuthCookie = () => {
 }
 
 describe('UserController', () => {
+    before(async () => {
+        return new Promise((resolve, reject) => {
+            Server.on('start', resolve)
+        })
+    })
+
     beforeEach(async () => {
         await TestData.initializeTestData()
     })

@@ -3,50 +3,49 @@ const HapiPino = require('hapi-pino')
 const HapiAuthJwt2 = require('hapi-auth-jwt2')
 const Config = require('config')
 const Routes = require('./lib/routes')
-const DB = require('./lib/models/db')
 const logger = require('./lib/logger')
 const validateToken = require('./lib/models/validate_token')
+const initDatabase = require('./lib/models/init_db')
 
 const server = new Hapi.Server()
 
 function provision () {
     return new Promise((resolve, reject) => {
-        server.connection({
-            port: Config.get('server.port'),
-            routes: {
-                cors: true
-            }
-        })
-
-        const plugins = [
-            { register: HapiPino, options: { instance: logger } },
-            HapiAuthJwt2
-        ]
-
-        server.register(plugins, (error) => {
-            if (error) {
-                reject(error)
-                return
-            }
-
-            server.auth.strategy('jwt', 'jwt', {
-                key: Config.get('jwt.secret'),
-                validateFunc: validateToken,
-                verifyOptions: {
-                    algorithms: [ 'HS256' ]
-                },
-                cookieKey: Config.get('jwt.cookieKey')
+        initDatabase().then(() => {
+            server.connection({
+                port: Config.get('server.port'),
+                routes: {
+                    cors: true
+                }
             })
 
-            server.auth.default('jwt')
+            const plugins = [
+                { register: HapiPino, options: { instance: logger } },
+                HapiAuthJwt2
+            ]
 
-            server.route(Routes)
+            server.register(plugins, (error) => {
+                if (error) {
+                    reject(error)
+                    return
+                }
 
-            DB.migrate.latest().then(() => {
-                logger.info('Ocomis User DB Migration finished.')
+                server.auth.strategy('jwt', 'jwt', {
+                    key: Config.get('jwt.secret'),
+                    validateFunc: validateToken,
+                    verifyOptions: {
+                        algorithms: [ 'HS256' ]
+                    },
+                    cookieKey: Config.get('jwt.cookieKey')
+                })
+
+                server.auth.default('jwt')
+
+                server.route(Routes)
+
                 server.start().then(resolve).catch(reject)
-            }).catch(reject)
-        })
+            })
+        }).catch(reject)
     })
 }
 

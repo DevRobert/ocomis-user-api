@@ -102,4 +102,34 @@ describe('UserDB', () => {
             expect(typeof userFromDatabase).to.equal('undefined')
         })
     })
+
+    describe('containsUsers()', () => {
+        describe('if it contains no users', () => {
+            it('should return false', async () => {
+                // Arrange
+
+                await TestData.clearAll()
+
+                // Act
+
+                const containsUsers = await UserDB.containsUsers()
+
+                // Assert
+
+                expect(containsUsers).equals(false)
+            })
+        })
+
+        describe('if it contains users', () => {
+            it('should return true', async () => {
+                // Act
+
+                const containsUsers = await UserDB.containsUsers()
+
+                // Assert
+
+                expect(containsUsers).equals(true)
+            })
+        })
+    })
 })

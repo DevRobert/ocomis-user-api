@@ -3,7 +3,6 @@ const DB = require('../../lib/models/db')
 const KnexCleaner = require('knex-cleaner')
 
 async function initializeTestData () {
-    await DB.migrate.latest()
     await clearAll()
     await initializeUsers()
 }
@@ -35,5 +34,6 @@ async function initializeUsers () {
 }
 
 module.exports = {
-    initializeTestData
+    initializeTestData,
+    clearAll
 }
